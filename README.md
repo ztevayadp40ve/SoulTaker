@@ -1,3 +1,4 @@
+<img src="img/soul.mp4" width="100%" height="100%" />
 
 <div align="center">
     <img src="https://img.shields.io/github/languages/top/MrShadowDev/SoulTaker?color=%23000000">
@@ -9,7 +10,7 @@
     <img src="https://img.shields.io/github/issues/MrShadowDev/SoulTaker?color=%23000000&logoColor=%23000000">
     <img src="https://img.shields.io/github/issues-closed/MrShadowDev/SoulTaker?color=%23000000&logoColor=%23000000">
     <br>
-    Any issue feel free to contact me!
+    Due to constant Discord terminations I will not be making a new support server. For urgent contact:
 </div>
 <hr style="border-radius: 2%; margin-top: 60px; margin-bottom: 60px;" noshade="" size="20" width="100%">
 
