@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/github/issues/MrShadowDev/SoulTaker?color=%23000000&logoColor=%23000000">
     <img src="https://img.shields.io/github/issues-closed/MrShadowDev/SoulTaker?color=%23000000&logoColor=%23000000">
     <br>
-    Due to constant Discord terminations I will not be making a new support server. For urgent contact:
+    Any issue feel free to contact me!
 </div>
 <hr style="border-radius: 2%; margin-top: 60px; margin-bottom: 60px;" noshade="" size="20" width="100%">
 
