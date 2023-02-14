@@ -1,4 +1,4 @@
-<img src="img/soul.mp4" width="100%" height="100%" />
+<img src="img/soul.png" width="100%" height="100%" />
 
 <div align="center">
     <img src="https://img.shields.io/github/languages/top/MrShadowDev/SoulTaker?color=%23000000">
@@ -85,6 +85,6 @@ SoulTaker is licensed under the <a href="https://mit-license.org/">MIT License</
 ## Errors?
 
 -   Make an [issue](https://github.com/MrShadowDev/SoulTaker/issues)
--   Join the [Discord](https://discord.gg/GudVbfd9ZU)
+-   [Checkout my links](https://xyl.lol/mrshadowdev)
 
 <img src="img/footer.png">
