@@ -113,12 +113,15 @@ class SystemInfo():
     def disk_data(self) -> tuple[str, str, bool]:
         disk = ("{:<9} "*4).format("Drive", "Free", "Total", "Use%") + "\n"
         for part in psutil.disk_partitions(all=False):
-            if os.name == 'nt':
-                if 'cdrom' in part.opts or part.fstype == '':
-                    continue
+            if os.name == 'nt' and ('cdrom' in part.opts or part.fstype == ''):
+                continue
             usage = psutil.disk_usage(part.mountpoint)
-            disk += ("{:<9} "*4).format(part.device, str(
-                usage.free // (2**30)) + "GB", str(usage.total // (2**30)) + "GB", str(usage.percent) + "%") + "\n"
+            disk += ("{:<9} " * 4).format(
+                part.device,
+                str(usage.free // (2**30)) + "GB",
+                f"{str(usage.total // 2**30)}GB",
+                f"{str(usage.percent)}%",
+            ) + "\n"
 
         return (
             ":floppy_disk: Disk",
