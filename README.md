@@ -87,4 +87,3 @@ SoulTaker is licensed under the <a href="https://mit-license.org/">MIT License</
 -   Make an [issue](https://github.com/MrShadowDev/SoulTaker/issues)
 -   [Checkout my links](https://xyl.lol/mrshadowdev)
 
-<img src="img/footer.png">
